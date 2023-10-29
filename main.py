@@ -5,7 +5,6 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.callbacks import StreamlitCallbackHandler
 from langchain.agents import AgentType, initialize_agent, load_tools
-import httplib2
 import os
 
 # Display UI using Streamlit
@@ -16,6 +15,9 @@ class StreamlitApp:
         uploaded_file = st.file_uploader("Choose a short video of you moving from left to right (or) right to left covering your entire body", type="mp4")
         
         if uploaded_file is not None:
+            input_directory = "input_videos"
+            if not os.path.exists(input_directory):
+                os.makedirs(input_directory)
             with open(os.path.join("input_videos",uploaded_file.name),"wb") as f: 
                 f.write(uploaded_file.getbuffer())    
             gait_analysis = GaitAnalysis(os.path.join("input_videos",uploaded_file.name))

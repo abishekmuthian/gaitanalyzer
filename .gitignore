@@ -4,3 +4,4 @@ __pycache__
 output_videos/*
 input_videos/*
 launch.json
+gait_analysis_results.csv
