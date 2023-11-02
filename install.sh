@@ -27,8 +27,12 @@ setup_folders(){
 }
 
 setup_containers() {
-	curl -o compose.yml https://raw.githubusercontent.com/abishekmuthian/gaitanalyzer/main/compose.yaml
+	curl -o compose.yaml https://raw.githubusercontent.com/abishekmuthian/gaitanalyzer/main/compose.yaml
 	docker-compose -f compose.yaml up -d
+}
+
+run_model(){
+    docker exec -it ollama ollama run llama2
 }
 
 show_output(){
@@ -39,4 +43,5 @@ show_output(){
 check_dependencies
 setup_folders
 setup_containers
+run_model
 show_output
