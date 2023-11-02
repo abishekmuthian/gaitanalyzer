@@ -28,7 +28,7 @@ setup_folders(){
 
 setup_containers() {
 	curl -o compose.yml https://raw.githubusercontent.com/abishekmuthian/gaitanalyzer/main/compose.yaml
-	docker-compose up -d
+	docker-compose -f compose.yaml up -d
 }
 
 show_output(){

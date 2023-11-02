@@ -38,7 +38,7 @@ setup_folders(){
 
 setup_containers() {
 	curl -o compose-gpu.yml https://raw.githubusercontent.com/abishekmuthian/gaitanalyzer/main/compose-gpu.yaml
-	docker-compose up -d
+	docker-compose -f compose-gpu.yaml up -d
 }
 
 show_output(){

@@ -1,7 +1,6 @@
 services:
   gaitanalyzer:
-    build:
-      context: .
+    image: abishekmuthian/gaitanalyzer:latest
     container_name: gaitanalyzer
     network_mode: "host"  
     ports:

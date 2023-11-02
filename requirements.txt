@@ -1,7 +1,6 @@
 streamlit
 mediapipe
 scipy
-httplib2
 opencv-python
 numpy
 pandas
