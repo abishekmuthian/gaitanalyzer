@@ -3,8 +3,6 @@ services:
     image: abishekmuthian/gaitanalyzer:latest
     container_name: gaitanalyzer
     network_mode: "host"
-    ports:
-      - 8501:8501
     volumes:
       - ${PWD}/input_videos:/app/input_videos
       - ${PWD}/output_videos:/app/output_videos
