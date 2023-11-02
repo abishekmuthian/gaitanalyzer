@@ -6,11 +6,19 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.callbacks import StreamlitCallbackHandler
 from langchain.agents import AgentType, initialize_agent, load_tools
 import os
+import uuid
+from PIL import Image
 
 # Display UI using Streamlit
 class StreamlitApp:
     def __init__(self):
+        st.set_page_config(
+        page_title="Gait Analyzer",
+        page_icon="./images/logo.png")
         st.title("Gait Analyzer")
+        image = Image.open("./images/logo.png")
+        st.caption("Analyze your gait for health disorders at the comfort of your home in your own personal computer.")
+        st.image(image)
         st.header("Video Upload")
         uploaded_file = st.file_uploader("Choose a short video of you moving from left to right (or) right to left covering your entire body", type="mp4")
         
@@ -18,9 +26,10 @@ class StreamlitApp:
             input_directory = "input_videos"
             if not os.path.exists(input_directory):
                 os.makedirs(input_directory)
-            with open(os.path.join("input_videos",uploaded_file.name),"wb") as f: 
+            input_video_filename = uuid.uuid4().hex+".mp4"    
+            with open(os.path.join("input_videos",input_video_filename),"wb") as f: 
                 f.write(uploaded_file.getbuffer())    
-            gait_analysis = GaitAnalysis(os.path.join("input_videos",uploaded_file.name))
+            gait_analysis = GaitAnalysis(os.path.join("input_videos",input_video_filename))
             output_video, df, result, plt = gait_analysis.process_video()
             
             st.header("Annotated video:")
@@ -51,7 +60,7 @@ class StreamlitApp:
 
             st.header("Your gait pattern explanation:")
 
-            prompt = "Can you please explain the following gait data and also explain the gait pattern from the given data - "+result
+            prompt = "This is my gait data, explain the contents of this gait data and explain my gait pattern from the given gait data - "+result
             self.run_model(prompt)
 
 

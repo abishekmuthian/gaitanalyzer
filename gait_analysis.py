@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from mediapipe import solutions
 from mediapipe.framework.formats import landmark_pb2
 import os
+import uuid
 
 class GaitAnalysis:
     def __init__(self, video_path, model_path="./model/pose_landmarker_heavy.task"):
@@ -53,7 +54,9 @@ class GaitAnalysis:
         if not os.path.exists(output_directory):
             os.makedirs(output_directory)
 
-        output_video_path = os.path.join(output_directory, "annotated_video.webm")
+        output_video_filename = uuid.uuid4().hex    
+    
+        output_video_path = os.path.join(output_directory, output_video_filename+".webm")
 
         if len(frames[0].shape) == 2:  # Check if grayscale
             height, width = frames[0].shape
@@ -258,8 +261,6 @@ class GaitAnalysis:
                 'Double Support Times Right': pad_list(double_support_times_right, max_len),
             })
 
-            self.df.to_csv('gait_analysis_results.csv', index=False)        
-            
             # Store the results in string
             result = "Stance Time Left: {stance_time_left}, Stance Time Right: {stance_time_right}, Swing Time Left: {swing_time_left}, Swing Time Right: {swing_time_right}, Step Time Left: {step_time_left}, Step Time Right: {step_time_right}, Double Support Times Left: {double_support_times_left}, Double Support Times Right: {double_support_times_right}".format(
                 stance_time_left = stance_times_left,
