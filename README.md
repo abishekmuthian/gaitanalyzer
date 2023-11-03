@@ -8,7 +8,7 @@ Analyze your gait for health disorders at the comfort of your home in your own p
 
 Gait abnormalities can be attributed to various [musculoskeletal and neurological conditions](https://stanfordmedicine25.stanford.edu/the25/gait.html) and so gait analysis is being used as an important diagnostic tool by doctors.
 
-Automated gait analysis required expensive motion capture or multiple-camera systems. But with Gait Analyzer one can analyze their gait in comfort and privacy of their home on their computer.
+Automated gait analysis requires expensive motion capture or multiple-camera systems. But with Gait Analyzer one can analyze their gait in comfort and privacy of their home on their computer.
 
 ## How
 
@@ -17,6 +17,11 @@ Gait Analyzer implements the algorithm published in the paper titled [Automated 
 This algorithm for gait analysis is shown to be as realiable as a motion capture system for most scenarios.
 
 Gait Analyzer further uses llama2 large language model to interpret the gait data to the end user in simple terms.
+
+## Video Demo
+
+![A non-gendered humanoid with rainbow colors walking, Docker and Ollama logos](https://gaitanalyzer.s3.us-east-2.amazonaws.com/Video_Thumbnail.png)
+Clicking the above image will open the video on YouTube.
 
 ## Features
 
