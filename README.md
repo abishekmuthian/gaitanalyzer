@@ -55,7 +55,7 @@ Clicking the above image will open the video on YouTube.
 
 ## Architecture
 
-![Gait Analyzer Architecture](https://gaitanalyzer.s3.us-east-2.amazonaws.com/gait-analyzer-architecture.png)
+![Gait Analyzer Architecture](https://gaitanalyzer.s3.us-east-2.amazonaws.com/gait-analyzer-architecture.png?nocache=true)
 
 ## Usage
 
