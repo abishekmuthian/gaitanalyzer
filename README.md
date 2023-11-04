@@ -20,7 +20,7 @@ Gait Analyzer further uses llama2 large language model to interpret the gait dat
 
 ## Video Demo
 
-![A non-gendered humanoid with rainbow colors walking, Docker and Ollama logos](https://gaitanalyzer.s3.us-east-2.amazonaws.com/Video_Thumbnail.png)
+[![A non-gendered humanoid with rainbow colors walking, Docker and Ollama logos](https://gaitanalyzer.s3.us-east-2.amazonaws.com/Video_Thumbnail.png)](https://www.youtube.com/watch?v=flt7vQNh-fM)
 Clicking the above image will open the video on YouTube.
 
 ## Features
