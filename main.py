@@ -16,6 +16,12 @@ class StreamlitApp:
         page_title="Gait Analyzer",
         page_icon="./images/logo.png")
         st.title("Gait Analyzer")
+        # Set the sidebar for navigation
+        st.sidebar.title("Gait Analyzer")
+        st.sidebar.markdown("Run Gait Analyzer on your computer using [Docker](https://hub.docker.com/r/abishekmuthian/gaitanalyzer).")
+        st.sidebar.write("Built by Abishek Muthian.")
+        st.sidebar.markdown("---") 
+        
         image = Image.open("./images/logo.png")
         st.caption("Analyze your gait for health disorders at the comfort of your home in your own personal computer.")
         st.image(image)
