@@ -74,6 +74,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/abishekmuthian/gaitanalyze
 
 Run the LLM model on GPU
 
+_Note: Requires [Nvidia drivers and Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installation) to be installed._
+
 ```bash
 mkdir gaitanalyzer && cd gaitanalyzer
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/abishekmuthian/gaitanalyzer/main/install-gpu.sh)"
