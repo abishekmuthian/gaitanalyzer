@@ -61,7 +61,7 @@ Clicking the above image will open the video on YouTube.
 
 ### Docker
 
-Use Gait Analyzer to analyze your gait in your computer using [Docker](https://hub.docker.com/repository/docker/abishekmuthian/gaitanalyzer/general).
+Use Gait Analyzer to analyze your gait on your computer using [Docker](https://hub.docker.com/r/abishekmuthian/gaitanalyzer).
 
 ### Setup
 
