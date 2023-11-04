@@ -14,7 +14,7 @@ Automated gait analysis requires expensive motion capture or multiple-camera sys
 
 Gait Analyzer implements the algorithm published in the paper titled [Automated Gait Analysis Based on a Marker-Free Pose Estimation Model](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10384445/).
 
-This algorithm for gait analysis is shown to be as realiable as a motion capture system for most scenarios.
+This algorithm for gait analysis is shown to be as reliable as a motion capture system for most scenarios.
 
 Gait Analyzer further uses llama2 large language model to interpret the gait data to the end user in simple terms.
 
@@ -26,9 +26,9 @@ Clicking the above image will open the video on YouTube.
 ## Features
 
 - Do gait analysis on videos locally on your computer.
-- Annotated Video.
+- Annotated Video with pose-estimation.
 - Distances, Peaks and Minima plotted for each leg.
-- Gait data.
+- Displaying Gait data.
 - Download of gait data as .csv file.
 - Gait pattern explanation using Large Language Model.
 
