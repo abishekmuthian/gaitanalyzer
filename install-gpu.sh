@@ -42,7 +42,9 @@ setup_containers() {
 }
 
 run_model(){
-    docker exec -it ollama ollama run llama2 <<< "/bye"
+    docker exec -it ollama ollama run llama2 <<EOF
+/bye
+EOF
 }
 
 show_output(){
