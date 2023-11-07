@@ -19,6 +19,7 @@ class StreamlitApp:
         # Set the sidebar for navigation
         st.sidebar.title("Gait Analyzer")
         st.sidebar.markdown("Run Gait Analyzer on your computer using [Docker](https://hub.docker.com/r/abishekmuthian/gaitanalyzer).")
+        st.sidebar.markdown("Source: [GitHub](https://github.com/abishekmuthian/gaitanalyzer).")
         st.sidebar.write("Built by Abishek Muthian.")
         st.sidebar.markdown("---") 
         
