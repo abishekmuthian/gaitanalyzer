@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-# Gait Analyzer setup using `docker-compose`.
+# Gait Analyzer setup using `docker compose`.
 # See https://github.com/abishekmuthian/gaitanalyzer for detailed installation steps.
 
 check_dependencies() {
@@ -15,8 +15,8 @@ check_dependencies() {
 		exit 1
 	fi
 
-	if ! command -v docker-compose > /dev/null; then
-		echo "docker-compose is not installed."
+	if ! command -v docker compose > /dev/null; then
+		echo "docker compose is not installed."
 		exit 1
 	fi
 
@@ -38,7 +38,7 @@ setup_folders(){
 
 setup_containers() {
 	curl -o compose-gpu.yaml https://raw.githubusercontent.com/abishekmuthian/gaitanalyzer/main/compose-gpu.yaml
-	docker-compose -f compose-gpu.yaml up -d
+	docker compose -f compose-gpu.yaml up -d
 }
 
 run_model(){
