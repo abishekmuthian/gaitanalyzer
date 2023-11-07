@@ -16,7 +16,7 @@ Gait Analyzer implements the algorithm published in the paper titled [Automated 
 
 This algorithm for gait analysis is shown to be as reliable as a motion capture system for most scenarios.
 
-Gait Analyzer further uses llama2 large language model to interpret the gait data to the end user in simple terms.
+Gait Analyzer further uses Llama2 large language model to interpret the gait data to the end user in simple terms.
 
 ## Video Demo
 
@@ -26,7 +26,7 @@ Clicking the above image will open the video on YouTube.
 ## Features
 
 - Do gait analysis on videos locally on your computer.
-- Annotated Video with pose-estimation.
+- Annotated video with pose-estimation.
 - Distances, Peaks and Minima plotted for each leg.
 - Displaying Gait data.
 - Download of gait data as .csv file.
