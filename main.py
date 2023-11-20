@@ -8,26 +8,33 @@ from langchain.agents import AgentType, initialize_agent, load_tools
 import os
 import uuid
 from PIL import Image
+import streamlit.components.v1 as components
 
 # Display UI using Streamlit
 class StreamlitApp:
     def __init__(self):
         st.set_page_config(
         page_title="Gait Analyzer",
-        page_icon="./images/logo.png")
+        page_icon="./images/logo.png",
+        initial_sidebar_state="collapsed")
         st.title("Gait Analyzer")
         # Set the sidebar for navigation
         st.sidebar.title("Gait Analyzer")
-        st.sidebar.markdown("Run Gait Analyzer on your computer using [Docker](https://hub.docker.com/r/abishekmuthian/gaitanalyzer).")
         st.sidebar.markdown("Source: [GitHub](https://github.com/abishekmuthian/gaitanalyzer).")
-        st.sidebar.write("Built by Abishek Muthian.")
+        st.sidebar.write("Built by Abishek Muthian. © 2023")
         st.sidebar.markdown("---") 
         
         image = Image.open("./images/logo.png")
-        st.caption("Analyze your gait for health disorders at the comfort of your home in your own personal computer.")
+        st.caption(
+            """
+            Analyze your gait for health disorders at the comfort of your home.
+            """
+                )
         st.image(image)
         st.header("Video Upload")
-        uploaded_file = st.file_uploader("Choose a short video of you moving from left to right (or) right to left covering your entire body", type="mp4")
+        uploaded_file = st.file_uploader(
+            "Choose a short video of you moving from left to right (or) right to left covering your entire body.",
+            type="mp4")
         
         if uploaded_file is not None:
             input_directory = "input_videos"
@@ -70,7 +77,73 @@ class StreamlitApp:
             prompt = "This is my gait data, explain the contents of this gait data and explain my gait pattern from the given gait data - "+result
             self.run_model(prompt)
 
+        # components.iframe(
+        #     src="https://github.com/sponsors/abishekmuthian/card",
+        #     width=600,
+        #     height=225,
+        #     scrolling=False
+        # )
 
+        st.markdown("---") 
+
+        st.markdown(
+             """
+<iframe src="https://github.com/sponsors/abishekmuthian/card" title="Sponsor abishekmuthian" height="125" width="700" style="border: 0;"></iframe>
+             """, 
+             unsafe_allow_html=True, 
+             )
+        
+        st.markdown(
+            """
+            <a href="https://abishek.openpaymenthost.com/products/1-gait-analyzer-health-artificialintelligence" target="_blank">Don't have a GitHub account? Sponsor on Open Payment Host without any login!</a>    
+            """,
+            unsafe_allow_html=True
+            )
+        
+        st.markdown("---") 
+        
+        st.markdown(
+            """
+## Why
+
+Gait abnormalities can be attributed to various [musculoskeletal and neurological conditions](https://stanfordmedicine25.stanford.edu/the25/gait.html) and so gait analysis is being used as an important diagnostic tool by doctors.
+
+Automated gait analysis requires expensive motion capture or multiple-camera systems. But with Gait Analyzer one can analyze their gait in comfort and privacy of their home on their computer.
+
+## How
+
+Gait Analyzer implements the algorithm published in the paper titled [Automated Gait Analysis Based on a Marker-Free Pose Estimation Model](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10384445/).
+
+This algorithm for gait analysis is shown to be as reliable as a motion capture system for most scenarios.
+
+Gait Analyzer further uses Llama2 large language model to interpret the gait data to the end user in simple terms.
+
+## Features
+
+- Do gait analysis on videos locally on your computer.
+- Annotated video with pose-estimation.
+- Distances, Peaks and Minima plotted for each leg.
+- Displaying Gait data.
+- Download of gait data as .csv file.
+- Gait pattern explanation using Large Language Model.
+
+## Video Demo
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/FcxCcRieKNA?si=FcxCcRieKNA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+## Where are my videos stored?
+If you're using Gait Analyzer on [https://gaitanalyzer.health](https://gaitanalyzer.health) then the video is stored in the server, 
+which might be used for research and improving Gait Analyzer.
+
+If you're running Gait Analyzer locally using [docker](https://hub.docker.com/r/abishekmuthian/gaitanalyzer) then the videos are stored on your computer.
+
+## How can I help?
+Sponsor the project and if you're a coder, You can try contributing to the Gait Analyzer [open-source](https://github.com/abishekmuthian/gaitanalyzer) project.
+Sponsor perks would be announced soon.
+            """,
+            unsafe_allow_html=True,
+        )
+        
     # Download the dataframe as a .csv file    
     @staticmethod
     @st.cache_data

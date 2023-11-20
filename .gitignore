@@ -1,6 +1,7 @@
 *-workspace
 __pycache__
 .venv
+.python3.11 venv
 output_videos/*
 input_videos/*
 launch.json
