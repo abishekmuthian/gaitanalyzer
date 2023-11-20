@@ -41,4 +41,4 @@ output_videos/\*
 input_videos/\*
 launch.json
 .venv
-.python3.11 venv
+. 
