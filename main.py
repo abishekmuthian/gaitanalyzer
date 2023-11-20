@@ -132,7 +132,7 @@ Gait Analyzer further uses Llama2 large language model to interpret the gait dat
 <iframe width="560" height="315" src="https://www.youtube.com/embed/FcxCcRieKNA?si=FcxCcRieKNA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Where are my videos stored?
-If you're using Gait Analyzer on [https://gaitanalyzer.health](https://gaitanalyzer.health) then the video is stored in the server, 
+If you're using Gait Analyzer on [https://gaitanalyzer.health](https://gaitanalyzer.health) then the videos are stored in the server, 
 which might be used for research and improving Gait Analyzer.
 
 If you're running Gait Analyzer locally using [docker](https://hub.docker.com/r/abishekmuthian/gaitanalyzer) then the videos are stored on your computer.
