@@ -211,29 +211,33 @@ class GaitAnalysis:
                 if subsequent_minima:
                     stance_time = (subsequent_minima[0] - peaks_left[i]) / frame_rate
                     stance_times_left.append(stance_time)
-            # Swing Time for left foot
-            try:
-                swing_time_left = [(peaks_left[i+1] - minima_left[i]) / frame_rate for i in range(len(minima_left) - 1)]
-            except IndexError:
-                swing_time_left = [(peaks_left[i+1] - minima_left[i]) / frame_rate for i in range(min(len(peaks_left)-1, len(minima_left)))]
+            # Swing Time for left foot (toe-off → next heel strike, same leg)
+            swing_time_left = []
+            for i in range(len(minima_left)):
+                subsequent_peaks = [p for p in peaks_left if p > minima_left[i]]
+                if subsequent_peaks:
+                    swing_time_left.append((subsequent_peaks[0] - minima_left[i]) / frame_rate)
 
-            # Swing Time for right foot
-            try:
-                swing_time_right = [(peaks_right[i+1] - minima_right[i]) / frame_rate for i in range(len(minima_right) - 1)]
-            except IndexError:
-                swing_time_right = [(peaks_right[i+1] - minima_right[i]) / frame_rate for i in range(min(len(peaks_right)-1, len(minima_right)))]
+            # Swing Time for right foot (toe-off → next heel strike, same leg)
+            swing_time_right = []
+            for i in range(len(minima_right)):
+                subsequent_peaks = [p for p in peaks_right if p > minima_right[i]]
+                if subsequent_peaks:
+                    swing_time_right.append((subsequent_peaks[0] - minima_right[i]) / frame_rate)
 
-            # Step Time for left foot
-            try:
-                step_time_left = [(peaks_left[i+1] - peaks_left[i]) / frame_rate for i in range(len(peaks_left) - 1)]
-            except IndexError:
-                step_time_left = [(peaks_left[i+1] - peaks_left[i]) / frame_rate for i in range(len(peaks_left) - 2)]
+            # Step Time for left foot (left heel strike → next right heel strike)
+            step_time_left = []
+            for i in range(len(peaks_left)):
+                subsequent_right = [p for p in peaks_right if p > peaks_left[i]]
+                if subsequent_right:
+                    step_time_left.append((subsequent_right[0] - peaks_left[i]) / frame_rate)
 
-            # Step Time for right foot
-            try:
-                step_time_right = [(peaks_right[i+1] - peaks_right[i]) / frame_rate for i in range(len(peaks_right) - 1)]
-            except IndexError:
-                step_time_right = [(peaks_right[i+1] - peaks_right[i]) / frame_rate for i in range(len(peaks_right) - 2)]
+            # Step Time for right foot (right heel strike → next left heel strike)
+            step_time_right = []
+            for i in range(len(peaks_right)):
+                subsequent_left = [p for p in peaks_left if p > peaks_right[i]]
+                if subsequent_left:
+                    step_time_right.append((subsequent_left[0] - peaks_right[i]) / frame_rate)
 
             # Double Support Time (heel strike of left foot to toe-off of the right foot)
             double_support_times_left = []  # between left heel strike and right toe-off
