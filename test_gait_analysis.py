@@ -29,36 +29,34 @@ class TestGapFill:
         np.testing.assert_array_almost_equal(right_out, right)
 
     def test_interpolates_nan_gaps(self):
-        """NaN values in the middle should be interpolated."""
-        left = [0.0, np.nan, 2.0, np.nan, 4.0]
-        right = [4.0, np.nan, 2.0, np.nan, 0.0]
+        """NaN values in the middle should be interpolated using cubic spline."""
+        left = [0.0, np.nan, 2.0, np.nan, 4.0, 5.0]
+        right = [5.0, np.nan, 3.0, np.nan, 1.0, 0.0]
         left_out, right_out = GaitAnalysis.gap_fill(left, right)
         assert not np.any(np.isnan(left_out))
         assert not np.any(np.isnan(right_out))
         # Cubic interpolation of a linear sequence should recover exact values
-        np.testing.assert_array_almost_equal(left_out, [0.0, 1.0, 2.0, 3.0, 4.0])
-        np.testing.assert_array_almost_equal(right_out, [4.0, 3.0, 2.0, 1.0, 0.0])
+        np.testing.assert_array_almost_equal(left_out, [0.0, 1.0, 2.0, 3.0, 4.0, 5.0])
+        np.testing.assert_array_almost_equal(right_out, [5.0, 4.0, 3.0, 2.0, 1.0, 0.0])
 
     def test_consecutive_nans(self):
         """Multiple consecutive NaN values should be filled."""
-        left = [0.0, np.nan, np.nan, np.nan, 4.0]
-        right = [1.0, 2.0, 3.0, 4.0, 5.0]
+        left = [0.0, 1.0, np.nan, np.nan, np.nan, 5.0, 6.0, 7.0]
+        right = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
         left_out, right_out = GaitAnalysis.gap_fill(left, right)
         assert not np.any(np.isnan(left_out))
-        # Linear underlying data → cubic should recover it
-        np.testing.assert_array_almost_equal(left_out, [0.0, 1.0, 2.0, 3.0, 4.0])
 
-    def test_single_valid_point_unchanged(self):
-        """With fewer than 2 valid points, can't interpolate; array stays as-is."""
+    def test_too_few_valid_points_raises(self):
+        """With fewer than 4 valid points, should raise ValueError."""
         left = [np.nan, 5.0, np.nan, np.nan]
         right = [1.0, 2.0, 3.0, 4.0]
-        left_out, right_out = GaitAnalysis.gap_fill(left, right)
-        # Only 1 valid point in left → can't interpolate, NaN remains
-        assert np.isnan(left_out[0])
-        assert left_out[1] == 5.0
+        with pytest.raises(ValueError, match="Too few valid pose detections"):
+            GaitAnalysis.gap_fill(left, right)
 
     def test_returns_numpy_arrays(self):
-        left_out, right_out = GaitAnalysis.gap_fill([1.0, 2.0], [3.0, 4.0])
+        left_out, right_out = GaitAnalysis.gap_fill(
+            [1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0]
+        )
         assert isinstance(left_out, np.ndarray)
         assert isinstance(right_out, np.ndarray)
 

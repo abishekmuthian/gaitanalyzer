@@ -80,17 +80,19 @@ class GaitAnalysis:
         dist_left = np.array(dist_left, dtype=float)
         dist_right = np.array(dist_right, dtype=float)
 
-        # Identify valid (non-NaN) indices and interpolate gaps
+        # Identify valid (non-NaN) indices and interpolate gaps using cubic spline per paper
         for dist in [dist_left, dist_right]:
             valid = ~np.isnan(dist)
             n_valid = valid.sum()
-            if n_valid >= 2:
-                x_valid = np.where(valid)[0]
-                x_all = np.arange(len(dist))
-                # Cubic requires >= 4 points; fall back to linear otherwise
-                kind = 'cubic' if n_valid >= 4 else 'linear'
-                interp_func = interp1d(x_valid, dist[valid], kind=kind, fill_value="extrapolate")
-                dist[:] = interp_func(x_all)
+            if n_valid < 4:
+                raise ValueError(
+                    f"Too few valid pose detections ({n_valid}) for cubic spline "
+                    f"interpolation. At least 4 are required for reliable gait analysis."
+                )
+            x_valid = np.where(valid)[0]
+            x_all = np.arange(len(dist))
+            interp_func = interp1d(x_valid, dist[valid], kind='cubic', fill_value="extrapolate")
+            dist[:] = interp_func(x_all)
 
         return dist_left, dist_right
                
