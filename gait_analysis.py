@@ -83,10 +83,13 @@ class GaitAnalysis:
         # Identify valid (non-NaN) indices and interpolate gaps
         for dist in [dist_left, dist_right]:
             valid = ~np.isnan(dist)
-            if valid.sum() >= 2:
+            n_valid = valid.sum()
+            if n_valid >= 2:
                 x_valid = np.where(valid)[0]
                 x_all = np.arange(len(dist))
-                interp_func = interp1d(x_valid, dist[valid], kind='cubic', fill_value="extrapolate")
+                # Cubic requires >= 4 points; fall back to linear otherwise
+                kind = 'cubic' if n_valid >= 4 else 'linear'
+                interp_func = interp1d(x_valid, dist[valid], kind=kind, fill_value="extrapolate")
                 dist[:] = interp_func(x_all)
 
         return dist_left, dist_right
