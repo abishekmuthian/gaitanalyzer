@@ -77,17 +77,25 @@ class GaitAnalysis:
     # Gap-fill using cubic spline interpolation
     @staticmethod
     def gap_fill(dist_left, dist_right):
-        x = np.arange(len(dist_left))
-        interp_func_left = interp1d(x, dist_left, kind='cubic', fill_value="extrapolate")
-        interp_func_right = interp1d(x, dist_right, kind='cubic', fill_value="extrapolate")
-        dist_left_filled = interp_func_left(x)
-        dist_right_filled = interp_func_right(x)
-        return dist_left_filled, dist_right_filled
+        dist_left = np.array(dist_left, dtype=float)
+        dist_right = np.array(dist_right, dtype=float)
+
+        # Identify valid (non-NaN) indices and interpolate gaps
+        for dist in [dist_left, dist_right]:
+            valid = ~np.isnan(dist)
+            if valid.sum() >= 2:
+                x_valid = np.where(valid)[0]
+                x_all = np.arange(len(dist))
+                interp_func = interp1d(x_valid, dist[valid], kind='cubic', fill_value="extrapolate")
+                dist[:] = interp_func(x_all)
+
+        return dist_left, dist_right
                
     # Butterworth low-pass filter
     @staticmethod
     def butterworth_low_pass_filter(dist_left_filled, dist_right_filled, frame_rate):
-        fs=len(dist_left_filled)/frame_rate
+        # Sampling frequency is the video frame rate (Hz), not duration
+        fs = frame_rate
         nyq = 0.5 * fs
         cutoff = 0.1752  # Using the provided cutoff frequency
         order = 10
@@ -126,15 +134,20 @@ class GaitAnalysis:
                 if pose_landmarker_result.pose_landmarks:
                     landmarks = pose_landmarker_result.pose_landmarks[0]
                     keypoint_data = [(landmark.x, landmark.y, landmark.z) for landmark in landmarks]
-                    
+
                     # Get keypoints and their visibility
                     left_hip = np.array(keypoint_data[23])
                     right_hip = np.array(keypoint_data[24])
                     left_foot_index = np.array(keypoint_data[31])
                     right_foot_index = np.array(keypoint_data[32])
 
-                    dist_left.append(np.linalg.norm(np.subtract(left_hip, left_foot_index)))
-                    dist_right.append(np.linalg.norm(np.subtract(right_hip, right_foot_index)))
+                    # Paper: use horizontal (x-axis) distance only (sagittal plane)
+                    dist_left.append(abs(left_hip[0] - left_foot_index[0]))
+                    dist_right.append(abs(right_hip[0] - right_foot_index[0]))
+                else:
+                    # Insert NaN for frames with no detected pose so gap-fill can interpolate
+                    dist_left.append(np.nan)
+                    dist_right.append(np.nan)
 
                 frame_number += 1
 
@@ -144,13 +157,17 @@ class GaitAnalysis:
 
             dist_left_filtered, dist_right_filtered = self.butterworth_low_pass_filter(dist_left_filled, dist_right_filled, frame_rate)
 
-            # Find peaks for heel strike
-            peaks_left, _ = find_peaks(dist_left_filtered, distance=0.8*frame_rate)
-            peaks_right, _ = find_peaks(dist_right_filtered, distance=0.8*frame_rate)
+            # Find peaks for heel strike with height thresholds per paper
+            left_peak_height = 0.35 * np.max(dist_left_filtered)
+            right_peak_height = 0.46 * np.max(dist_right_filtered)
+            peaks_left, _ = find_peaks(dist_left_filtered, distance=0.8*frame_rate, height=left_peak_height)
+            peaks_right, _ = find_peaks(dist_right_filtered, distance=0.8*frame_rate, height=right_peak_height)
 
-            # Find minima for toe-off
-            minima_left, _ = find_peaks(-dist_left_filtered, distance=0.8*frame_rate)
-            minima_right, _ = find_peaks(-dist_right_filtered, distance=0.8*frame_rate)
+            # Find minima for toe-off with height threshold per paper
+            left_minima_height = 0.18 * np.min(dist_left_filtered)
+            right_minima_height = 0.18 * np.min(dist_right_filtered)
+            minima_left, _ = find_peaks(-dist_left_filtered, distance=0.8*frame_rate, height=-left_minima_height)
+            minima_right, _ = find_peaks(-dist_right_filtered, distance=0.8*frame_rate, height=-right_minima_height)
 
             # Plotting distances, peaks and minima
             # For Left Leg
