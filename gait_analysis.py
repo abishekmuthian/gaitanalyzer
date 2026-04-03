@@ -94,12 +94,10 @@ class GaitAnalysis:
     # Butterworth low-pass filter
     @staticmethod
     def butterworth_low_pass_filter(dist_left_filled, dist_right_filled, frame_rate):
-        # Sampling frequency is the video frame rate (Hz), not duration
-        fs = frame_rate
-        nyq = 0.5 * fs
-        cutoff = 0.1752  # Using the provided cutoff frequency
+        # Paper specifies 0.1752 as the normalized cutoff frequency (Wn),
+        # where Wn = 1.0 corresponds to the Nyquist frequency (fs/2).
         order = 10
-        normal_cutoff = cutoff / nyq
+        normal_cutoff = 0.1752
         b, a = butter(order, normal_cutoff, btype='low', analog=False)
         dist_left_filtered = filtfilt(b, a, dist_left_filled)
         dist_right_filtered = filtfilt(b, a, dist_right_filled)
